@@ -63,9 +63,10 @@ function userDao($job,$id,$data){
 
             if($job == "get"){
                 $query_string = "select * from user where id =" . mysqli_real_escape_string($db_connection,$id);
+                //die($query_string);
                 $query = mysqli_query($db_connection, $query_string);
 
-                if(!query){
+                if(!$query){
                     $result = "error";
                     $message = "Query error " . $query_string;
                 } else{
@@ -78,7 +79,7 @@ function userDao($job,$id,$data){
                             "second_name" => $sqldata['second_name'],
                             "username" => $sqldata['username'],
                             "password" => $sqldata['password'],
-                            "user_type" => $sqldata['password']
+                            "user_type" => $sqldata['user_type']
                         );
                     }
                 }
@@ -119,7 +120,9 @@ function userDao($job,$id,$data){
                 if($data['password']!= ""){ $query_string .= "password = '".mysqli_real_escape_string($db_connection,$data['password'])."',";}
                 if($data['user_type']!= ""){ $query_string .= "user_type = '".mysqli_real_escape_string($db_connection,$data['user_type'])."'";}
 
-                $query_string .= "where id = '".mysqli_real_escape_string($db_connection,$id)."'";
+                $query_string .= " where id = '".mysqli_real_escape_string($db_connection,$id)."'";
+
+                //die($query_string);
 
                 $query = mysqli_query($db_connection, $query_string);
 

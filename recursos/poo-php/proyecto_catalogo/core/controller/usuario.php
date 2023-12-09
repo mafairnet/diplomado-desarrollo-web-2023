@@ -69,10 +69,6 @@
                                             <small><span class="glyphicon glyphicon-file" aria-hidden="true"></span></small>
                                                 Edit
                                         </button>
-                                        <button class="btn btn-lightbox btn-default btn-sm function_assign_profile" id="details-test" style="width:80px!important;" data-id="'   . $user->id . '" data-name="' . $user->username.'">
-                                            <small><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></small>
-                                                Assign
-                                        </button>
                                         <button class="btn btn-lightbox btn-default btn-sm function_delete" id="details-test" style="width:80px!important;" data-id="'   . $user->id . '" data-name="' . $user->username.'">
                                             <small><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></small>
                                                 Delete
@@ -137,7 +133,7 @@
                 if (isset($_GET['user_username'])) { $username = $_GET['user_username']; }
                 if (isset($_GET['user_first_name'])) { $firstName = $_GET['user_first_name']; }
                 if (isset($_GET['user_second_name'])) { $secondName = $_GET['user_second_name']; }
-                if (isset($_GET['user_password'])) { $password = $_GET['user_password']; }
+                if (isset($_GET['user_password'])) { $password = md5($_GET['user_password']); }
                 if (isset($_GET['user_type'])) { $userType = $_GET['user_type']; }
                 
                 $opResult = insertUser($username,$firstName,$secondName,$password,$userType);
@@ -155,23 +151,24 @@
 
             if ($request == 'edit'){
 
+                $userId = "";
                 $username = "";
                 $firstName = "";
                 $secondName= "";
                 $password="";
-                $admin="";
+                $user_type="";
                 $passwordChanged="";
                 
-                
+                if (isset($_GET['user_id'])) { $userId = $_GET['user_id']; }
                 if (isset($_GET['user_username'])) { $username = $_GET['user_username']; }
                 if (isset($_GET['user_first_name'])) { $firstName = $_GET['user_first_name']; }
                 if (isset($_GET['user_second_name'])) { $secondName = $_GET['user_second_name']; }
                 if (isset($_GET['user_password'])) { $password = $_GET['user_password']; }
-                if (isset($_GET['user_admin'])) { $admin = $_GET['user_admin']; }
+                if (isset($_GET['user_type'])) { $user_type = $_GET['user_type']; }
                 if (isset($_GET['user_password_changed'])) { $passwordChanged = $_GET['user_password_changed']; }
                 
                 
-                $opResult = editUser($username,$firstName,$secondName,$password,$admin,$passwordChanged);
+                $opResult = editUser($userId,$username,$firstName,$secondName,$password,$user_type,$passwordChanged);
 
                 // Add 
                 if ($opResult == "error"){

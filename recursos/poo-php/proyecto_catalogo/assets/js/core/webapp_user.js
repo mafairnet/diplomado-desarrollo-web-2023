@@ -186,7 +186,7 @@ $(document).ready(function(){
     var request = $.ajax({
       url:          'core/controller/usuario.php?request=get',
       cache:        false,
-      data:         'id=' + id,
+      data:         'user_id=' + id,
       dataType:     'json',
       contentType:  'application/json; charset=utf-8',
       type:         'get'
@@ -194,6 +194,7 @@ $(document).ready(function(){
     console.log(request);
     request.done(function(output){
       //console.log("Admin" + output.data[0].admin);
+      //console.log(output.data.data);
       if (output.result == 'success'){
         $('.lightbox_content h2').text('Edit user');
         $('#form_user .action').text('Edit user');
@@ -201,11 +202,11 @@ $(document).ready(function(){
         $('#form_user').attr('data-id', id);
         $('#form_user .field_container label.error').hide();
         $('#form_user .field_container').removeClass('valid').removeClass('error');
-        $('#form_user #user_username').val(output.data[0].username);
-        $('#form_user #user_first_name').val(output.data[0].first_name);
-        $('#form_user #user_second_name').val(output.data[0].second_name);
-        $('#form_user #user_password').val(output.data[0].password);
-        $('#form_user #user_admin').val(output.data[0].admin).change();
+        $('#form_user #user_username').val(output.data.data[0].username);
+        $('#form_user #user_first_name').val(output.data.data[0].first_name);
+        $('#form_user #user_second_name').val(output.data.data[0].second_name);
+        $('#form_user #user_password').val(output.data.data[0].password);
+        $('#form_user #user_type').val(output.data.data[0].user_type).change();
         hide_loading_message();
         show_lightbox();
       } else {
@@ -231,7 +232,7 @@ $(document).ready(function(){
       var id        = $('#form_user').attr('data-id');
       var form_data = $('#form_user').serialize();
       var request   = $.ajax({
-        url:          'core/controller/usuario.php?request=edit&id=' + id,
+        url:          'core/controller/usuario.php?request=edit&user_id=' + id,
         cache:        false,
         data:         form_data,
         dataType:     'json',
@@ -268,7 +269,7 @@ $(document).ready(function(){
       show_loading_message();
       var id      = $(this).data('id');
       var request = $.ajax({
-        url:          'core/controller/usuario.php?request=delete&id=' + id,
+        url:          'core/controller/usuario.php?request=delete&user_id=' + id,
         cache:        false,
         dataType:     'json',
         contentType:  'application/json; charset=utf-8',
@@ -302,13 +303,15 @@ $(document).ready(function(){
       show_loading_message();
       var id      = $(this).data('id');
       var request = $.ajax({
-        url:          'core/controller/usuario.php?request=delete&id=' + id,
+        url:          'core/controller/usuario.php?request=delete&user_id=' + id,
         cache:        false,
         dataType:     'json',
         contentType:  'application/json; charset=utf-8',
         type:         'get'
       });
       request.done(function(output){
+        console.log(output);
+        //debugger;
         if (output.result == 'success'){
           // Reload datable
           table_users.api().ajax.reload(function(){
