@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Administracion de usuarios</title>
+    
+</head>
+<body>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var datatable = new DataTable('#tablaAlumnos');
+        });
+    </script>
+
+    <br/>
+
+    <h1>Administracion de usuarios Index</h1>
+    <br />
+    <div class="row">
+        <div class="col-md-9 bg-light text-right">
+
+        </div>
+        <div class="col-md-3 bg-light text-right">
+            <input type="button" value="Agregar Usuario" onclick="addUser()" />
+        </div>
+    </div>
+        <br />
+        <br />
+
+        <table id="tablaAlumnos" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>FirstName</th>
+                    <th>SecondName</th>
+                    <th>Username</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Miguel</td>
+                    <td>Torres</td>
+                    <td>mafairnet</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Dey</td>
+                    <td>Tello</td>
+                    <td>dey.tello</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Erasto</td>
+                    <td>Rodriguez</td>
+                    <td>erasto.rodriguez</td>
+                </tr>
+            </tbody>
+        </table>
+    
+
+
+</body>
+</html>
