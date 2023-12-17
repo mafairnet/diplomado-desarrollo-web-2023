@@ -11,6 +11,19 @@
         $(document).ready(function () {
             var datatable = new DataTable('#tablaAlumnos');
         });
+
+        function agregarUsuario() {
+            document.location = "/Usuario/Add/";
+        }
+
+        function editarUsuario(idUsuario) {
+            document.location = "/Usuario/Edit/" + idUsuario;
+        }
+
+        function borrarUsuario(idUsuario) {
+            document.location = "/Usuario/Delete/" + idUsuario;
+        }
+
     </script>
 
     <br/>
@@ -22,7 +35,7 @@
 
         </div>
         <div class="col-md-3 bg-light text-right">
-            <input type="button" value="Agregar Usuario" onclick="addUser()" />
+            <input type="button" value="Agregar Usuario" onclick="agregarUsuario()" />
         </div>
     </div>
         <br />
@@ -35,6 +48,7 @@
                     <th>FirstName</th>
                     <th>SecondName</th>
                     <th>Username</th>
+                    <th>Controles</th>
                 </tr>
             </thead>
             <tbody>
@@ -43,18 +57,30 @@
                     <td>Miguel</td>
                     <td>Torres</td>
                     <td>mafairnet</td>
+                    <td>
+                        <input type="button" value="Editar" onclick="editarUsuario('1')" />
+                        <input type="button" value="Borrar" onclick="borrarUsuario('1')" />
+                    </td>
                 </tr>
                 <tr>
                     <td>2</td>
                     <td>Dey</td>
                     <td>Tello</td>
                     <td>dey.tello</td>
+                    <td>
+                        <input type="button" value="Editar" onclick="editarUsuario('2')" />
+                        <input type="button" value="Borrar" onclick="borrarUsuario('2')" />
+                    </td>
                 </tr>
                 <tr>
                     <td>3</td>
                     <td>Erasto</td>
                     <td>Rodriguez</td>
                     <td>erasto.rodriguez</td>
+                    <td>
+                        <input type="button" value="Editar" onclick="editarUsuario('3')" />
+                        <input type="button" value="Borrar" onclick="borrarUsuario('3')" />
+                    </td>
                 </tr>
             </tbody>
         </table>
