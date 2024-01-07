@@ -1,0 +1,15 @@
+C:\proyectos-2023\HelloWorldApplication\HelloWorldApplication\bin\Debug\net6.0\HelloWorldApplication.exe
+C:\proyectos-2023\HelloWorldApplication\HelloWorldApplication\bin\Debug\net6.0\HelloWorldApplication.deps.json
+C:\proyectos-2023\HelloWorldApplication\HelloWorldApplication\bin\Debug\net6.0\HelloWorldApplication.runtimeconfig.json
+C:\proyectos-2023\HelloWorldApplication\HelloWorldApplication\bin\Debug\net6.0\HelloWorldApplication.dll
+C:\proyectos-2023\HelloWorldApplication\HelloWorldApplication\bin\Debug\net6.0\HelloWorldApplication.pdb
+C:\proyectos-2023\HelloWorldApplication\HelloWorldApplication\obj\Debug\net6.0\HelloWorldApplication.csproj.AssemblyReference.cache
+C:\proyectos-2023\HelloWorldApplication\HelloWorldApplication\obj\Debug\net6.0\HelloWorldApplication.GeneratedMSBuildEditorConfig.editorconfig
+C:\proyectos-2023\HelloWorldApplication\HelloWorldApplication\obj\Debug\net6.0\HelloWorldApplication.AssemblyInfoInputs.cache
+C:\proyectos-2023\HelloWorldApplication\HelloWorldApplication\obj\Debug\net6.0\HelloWorldApplication.AssemblyInfo.cs
+C:\proyectos-2023\HelloWorldApplication\HelloWorldApplication\obj\Debug\net6.0\HelloWorldApplication.csproj.CoreCompileInputs.cache
+C:\proyectos-2023\HelloWorldApplication\HelloWorldApplication\obj\Debug\net6.0\HelloWorldApplication.dll
+C:\proyectos-2023\HelloWorldApplication\HelloWorldApplication\obj\Debug\net6.0\refint\HelloWorldApplication.dll
+C:\proyectos-2023\HelloWorldApplication\HelloWorldApplication\obj\Debug\net6.0\HelloWorldApplication.pdb
+C:\proyectos-2023\HelloWorldApplication\HelloWorldApplication\obj\Debug\net6.0\HelloWorldApplication.genruntimeconfig.cache
+C:\proyectos-2023\HelloWorldApplication\HelloWorldApplication\obj\Debug\net6.0\ref\HelloWorldApplication.dll
