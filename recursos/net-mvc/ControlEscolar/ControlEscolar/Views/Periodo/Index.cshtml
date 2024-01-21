@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Administracion de periodos</title>
+    
+</head>
+<body>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var datatable = new DataTable('#tablaPeriodos');
+        });
+
+        function agregarPeriodo() {
+            document.location = "/Periodo/Add/";
+        }
+
+        function editarPeriodo(idPeriodo) {
+            document.location = "/Periodo/Edit/" + idPeriodo;
+        }
+
+        function borrarPeriodo(idPeriodo) {
+            document.location = "/Periodo/Delete/" + idPeriodo;
+        }
+
+    </script>
+
+    <br/>
+
+    <h1>Administracion de periodos Index</h1>
+    <br />
+    <div class="row">
+        <div class="col-md-9 bg-light text-right">
+
+        </div>
+        <div class="col-md-3 bg-light text-right">
+            <input type="button" value="Agregar Periodo" onclick="agregarPeriodo()" />
+        </div>
+    </div>
+        <br />
+        <br />
+
+        <table id="tablaPeriodos" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Id Status</th>
+                    <th>Controles</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var periodo in ViewData["catalogoPeriodos"] as List<ControlEscolar.Models.Periodo>)
+                {
+                    <tr>
+                        <td>@periodo.ID</td>
+                        <td>@periodo.Nombre</td>
+                        <td>@periodo.FechaInicio</td>
+                        <td>@periodo.FechaFin</td>
+                        <td>@periodo.IdStatus</td>
+                        <td>
+                            <input type="button" value="Editar" onclick="editarPeriodo('@periodo.ID')"/>
+                            <input type="button" value="Borrar" onclick="borrarPeriodo('@periodo.ID')"/>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    
+
+
+</body>
+</html>

@@ -8,7 +8,7 @@ namespace ControlEscolarApi.Model
         [Column("id")]
         public int ID { get; set; }
         [Column("nombre")]
-        public int Nombre { get; set; }
+        public string Nombre { get; set; }
         [Column("fecha_inicio")]
         public DateTime FechaInicio { get; set; }
         [Column("fecha_fin")]

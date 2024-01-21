@@ -1,4 +1,5 @@
-﻿using ControlEscolarApi.Model;
+﻿using ControlEscolarApi.Authorization;
+using ControlEscolarApi.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,8 +16,9 @@ namespace ControlEscolarApi.Controllers
         }
 
         //Get: api/Accion
+        [ApiKey]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Accion>>> GetAccions() {
+        public async Task<ActionResult<IEnumerable<Accion>>> GetAccions([FromHeader(Name = "X-API-Key")] string apiKey) {
             if (_dbContext.Accion == null) {
                 return NotFound();
             }
@@ -24,8 +26,9 @@ namespace ControlEscolarApi.Controllers
         }
 
         //Get: api/Accion/{id}
+        [ApiKey]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Accion>> GetAccion(int id)
+        public async Task<ActionResult<Accion>> GetAccion([FromHeader(Name = "X-API-Key")] string apiKey,int id)
         {
             if (_dbContext.Accion == null)
             {
@@ -42,8 +45,9 @@ namespace ControlEscolarApi.Controllers
         }
 
         //POST: api/Accion
+        [ApiKey]
         [HttpPost]
-        public async Task<ActionResult<Accion>> PostAccion(Accion accion)
+        public async Task<ActionResult<Accion>> PostAccion([FromHeader(Name = "X-API-Key")] string apiKey,Accion accion)
         {
             _dbContext.Accion.Add(accion);
             await _dbContext.SaveChangesAsync();
@@ -52,8 +56,9 @@ namespace ControlEscolarApi.Controllers
         }
 
         //PUT: api/Accion/{id}
+        [ApiKey]
         [HttpPut("{id}")]
-        public async Task<ActionResult> PutAccion(int id, Accion accion)
+        public async Task<ActionResult> PutAccion([FromHeader(Name = "X-API-Key")] string apiKey,int id, Accion accion)
         {
             if (id != accion.ID) {
                 return BadRequest();
@@ -79,8 +84,9 @@ namespace ControlEscolarApi.Controllers
         }
 
         //DELETE: api/Accion/{id}
+        [ApiKey]
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteAccion(int id)
+        public async Task<ActionResult> DeleteAccion([FromHeader(Name = "X-API-Key")] string apiKey, int id)
         {
             if (_dbContext.Accion == null) {
                 return NotFound();

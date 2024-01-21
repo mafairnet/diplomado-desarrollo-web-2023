@@ -1,3 +1,4 @@
+using ControlEscolarApi.Authorization;
 using ControlEscolarApi.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,11 +14,15 @@ namespace ControlEscolarApi
 
             Console.WriteLine(builder.Configuration.GetConnectionString("CatalogoEscolarDbContext"));
 
-            //Agrehando conectividad a BD
+            //Agregando conectividad a BD
             builder.Services.AddDbContext<CatalogoEscolarDbContext>( options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("CatalogoEscolarDbContext"))
                 
-                ); 
+                );
+
+            //Implementar Interface de APIKey para autentificacion a la API y sus endpoints
+            builder.Services.AddSingleton<ApiKeyAuthorizationFilter>();
+            builder.Services.AddSingleton<IApiKeyValidator, ApiKeyValidator>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
