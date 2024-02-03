@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace ControlEscolar.Controllers
 {
+    [Authorize]
     public class BitacoraController : Controller
     {
         // GET: Bitacora

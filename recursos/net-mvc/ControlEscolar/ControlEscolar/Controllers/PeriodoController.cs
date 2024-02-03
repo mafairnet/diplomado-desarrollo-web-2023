@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace ControlEscolar.Controllers
 {
+    [Authorize]
     public class PeriodoController : Controller
     {
 

@@ -15,6 +15,7 @@ namespace ControlEscolar.Models
         public string Nombre { get; set; }
         [JsonProperty("idEstado")]
         public int IdEstado { get; set; }
+        public Estado Estado { get; set; }
         #endregion
 
         #region Metodos

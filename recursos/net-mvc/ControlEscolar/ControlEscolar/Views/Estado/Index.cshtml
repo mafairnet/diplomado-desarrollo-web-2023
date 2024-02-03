@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Administracion de estados</title>
+    
+</head>
+<body>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var datatable = new DataTable('#tablaEstados');
+        });
+
+        function agregarEstado() {
+            document.location = "/Estado/Add/";
+        }
+
+        function editarEstado(idEstado) {
+            document.location = "/Estado/Edit/" + idEstado;
+        }
+
+        function borrarEstado(idEstado) {
+            document.location = "/Estado/Delete/" + idEstado;
+        }
+
+    </script>
+
+    <br/>
+
+    <h1>Administracion de estados</h1>
+    <br />
+    <div class="row">
+        <div class="col-md-9 bg-light text-right">
+
+        </div>
+        <div class="col-md-3 bg-light text-right">
+            <input type="button" value="Agregar Estado" onclick="agregarEstado()" />
+        </div>
+    </div>
+        <br />
+        <br />
+
+        <table id="tablaEstados" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Id Pais</th>
+                    <th>Controles</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var estado in ViewData["catalogoEstados"] as List<ControlEscolar.Models.Estado>)
+                {
+                    <tr>
+                        <td>@estado.ID</td>
+                        <td>@estado.Nombre</td>
+                        <td>@estado.Pais.Nombre</td>
+                        <td>
+                            <input type="button" value="Editar" onclick="editarEstado('@estado.ID')"/>
+                            <input type="button" value="Borrar" onclick="borrarEstado('@estado.ID')"/>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    
+
+
+</body>
+</html>

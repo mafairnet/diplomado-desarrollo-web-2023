@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Administracion de calles</title>
+    
+</head>
+<body>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var datatable = new DataTable('#tablaCalles');
+        });
+
+        function agregarCalle() {
+            document.location = "/Calle/Add/";
+        }
+
+        function editarCalle(idCalle) {
+            document.location = "/Calle/Edit/" + idCalle;
+        }
+
+        function borrarCalle(idCalle) {
+            document.location = "/Calle/Delete/" + idCalle;
+        }
+
+    </script>
+
+    <br/>
+
+    <h1>Administracion de calles</h1>
+    <br />
+    <div class="row">
+        <div class="col-md-9 bg-light text-right">
+
+        </div>
+        <div class="col-md-3 bg-light text-right">
+            <input type="button" value="Agregar Calle" onclick="agregarCalle()" />
+        </div>
+    </div>
+        <br />
+        <br />
+
+        <table id="tablaCalles" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Id Localidad</th>
+                    <th>Controles</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var calle in ViewData["catalogoCalles"] as List<ControlEscolar.Models.Calle>)
+                {
+                    <tr>
+                        <td>@calle.ID</td>
+                        <td>@calle.Nombre</td>
+                        <td>@calle.Localidad.Nombre</td>
+                        <td>
+                            <input type="button" value="Editar" onclick="editarCalle('@calle.ID')"/>
+                            <input type="button" value="Borrar" onclick="borrarCalle('@calle.ID')"/>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    
+
+
+</body>
+</html>

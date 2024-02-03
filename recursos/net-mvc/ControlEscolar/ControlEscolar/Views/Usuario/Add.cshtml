@@ -111,30 +111,30 @@
     @Html.HiddenFor(model => usuario.IdUbicacion)
 
     <div class="form-group">
-        @Html.LabelFor(model => usuario.IdUbicacion, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => usuario.Ubicacion, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownListFor(model => model.Ubicacion.ID, ViewBag.ubicaciones as SelectList, new { @class = "form-control", @onChange = "setUbicacion()" })
-            @Html.ValidationMessageFor(model => usuario.IdUbicacion, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => usuario.Ubicacion, "", new { @class = "text-danger" })
         </div>
     </div>
 
     @Html.HiddenFor(model => usuario.IdStatus)
 
     <div class="form-group">
-        @Html.LabelFor(model => usuario.IdStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => usuario.Status, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownListFor(model => model.Status.ID, ViewBag.statuses as SelectList, new { @class = "form-control", @onChange = "setStatus()" })
-            @Html.ValidationMessageFor(model => usuario.IdStatus, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => usuario.Status, "", new { @class = "text-danger" })
         </div>
     </div>
 
     @Html.HiddenFor(model => usuario.IdTipoUsuario)
 
     <div class="form-group">
-        @Html.LabelFor(model => usuario.IdTipoUsuario, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => usuario.TipoUsuario, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownListFor(model => model.TipoUsuario.ID, ViewBag.tipoUsuarios as SelectList, new { @class = "form-control", @onChange = "setTipoUsuario()" })
-            @Html.ValidationMessageFor(model => usuario.IdTipoUsuario, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => usuario.TipoUsuario, "", new { @class = "text-danger" })
         </div>
     </div>
 

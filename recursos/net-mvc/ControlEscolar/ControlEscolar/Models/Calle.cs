@@ -15,6 +15,7 @@ namespace ControlEscolar.Models
         public string Nombre { get; set; }
         [JsonProperty("idLocalidad")]
         public int IdLocalidad { get; set; }
+        public Localidad Localidad { get; set; }
         #endregion
 
         #region Metodos

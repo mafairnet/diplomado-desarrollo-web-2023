@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Administracion de ubicacions</title>
+    
+</head>
+<body>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var datatable = new DataTable('#tablaUbicacions');
+        });
+
+        function agregarUbicacion() {
+            document.location = "/Ubicacion/Add/";
+        }
+
+        function editarUbicacion(idUbicacion) {
+            document.location = "/Ubicacion/Edit/" + idUbicacion;
+        }
+
+        function borrarUbicacion(idUbicacion) {
+            document.location = "/Ubicacion/Delete/" + idUbicacion;
+        }
+
+    </script>
+
+    <br/>
+
+    <h1>Administracion de ubicacions</h1>
+    <br />
+    <div class="row">
+        <div class="col-md-9 bg-light text-right">
+
+        </div>
+        <div class="col-md-3 bg-light text-right">
+            <input type="button" value="Agregar Ubicacion" onclick="agregarUbicacion()" />
+        </div>
+    </div>
+        <br />
+        <br />
+
+        <table id="tablaUbicacions" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Numero Exterior</th>
+                    <th>Numero Interior</th>
+                    <th>Codigo Postal</th>
+                    <th>Calle</th>
+                    <th>Controles</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ubicacion in ViewData["catalogoUbicacions"] as List<ControlEscolar.Models.Ubicacion>)
+                {
+                    <tr>
+                        <td>@ubicacion.ID</td>
+                        <td>@ubicacion.Nombre</td>
+                        <td>@ubicacion.NumeroExterior</td>
+                        <td>@ubicacion.NumeroInterior</td>
+                        <td>@ubicacion.CodigoPostal</td>
+                        <td>@ubicacion.Calle.Nombre</td>
+                        <td>
+                            <input type="button" value="Editar" onclick="editarUbicacion('@ubicacion.ID')" />
+                            <input type="button" value="Borrar" onclick="borrarUbicacion('@ubicacion.ID')" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    
+
+
+</body>
+</html>

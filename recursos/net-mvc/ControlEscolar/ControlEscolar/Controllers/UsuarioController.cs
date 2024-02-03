@@ -1,100 +1,284 @@
 ﻿using ControlEscolar.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace ControlEscolar.Controllers
 {
+    [Authorize]
     public class UsuarioController : Controller
     {
+        string apiUrl = WebConfigurationManager.AppSettings["ControlEscolarApiUri"];
+        string apiKey = WebConfigurationManager.AppSettings["ControlEscolarApiKey"];
+
         // GET: Usuario
         public ActionResult Index()
         {
+            var catalogoTipoUsuarios = new List<TipoUsuario>();
+            var catalogoStatuses = new List<Status>();
+            var catalogoUbicaciones = new List<Ubicacion>();
+            var catalogoUsuarios = new List<Usuario>();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+                //http://url-api:puerto/municipio
+                var responseTask = client.GetAsync("TipoUsuario");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var content = result.Content.ReadAsStringAsync();
+
+                    var jsonSettings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+
+                    catalogoTipoUsuarios = JsonConvert.DeserializeObject<List<TipoUsuario>>(content.Result, jsonSettings);
+                }
+
+            }
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+                //http://url-api:puerto/municipio
+                var responseTask = client.GetAsync("Status");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var content = result.Content.ReadAsStringAsync();
+
+                    var jsonSettings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+
+                    catalogoStatuses = JsonConvert.DeserializeObject<List<Status>>(content.Result, jsonSettings);
+                }
+
+            }
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+                //http://url-api:puerto/municipio
+                var responseTask = client.GetAsync("Ubicacion");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var content = result.Content.ReadAsStringAsync();
+
+                    var jsonSettings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+
+                    catalogoUbicaciones = JsonConvert.DeserializeObject<List<Ubicacion>>(content.Result, jsonSettings);
+                }
+
+            }
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+                //http://url-api:puerto/municipio
+                var responseTask = client.GetAsync("Usuario");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var content = result.Content.ReadAsStringAsync();
+
+                    var jsonSettings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+
+                    catalogoUsuarios = JsonConvert.DeserializeObject<List<Usuario>>(content.Result, jsonSettings);
+                }
+
+            }
+
+            foreach (Usuario usuario in catalogoUsuarios)
+            {
+                var newTipoUsuario = new TipoUsuario();
+                newTipoUsuario.Nombre = "No definido";
+                usuario.TipoUsuario = newTipoUsuario;
+
+                foreach (TipoUsuario tipoUsuario in catalogoTipoUsuarios)
+                {
+                    if (usuario.IdTipoUsuario == tipoUsuario.ID)
+                    {
+                        usuario.TipoUsuario = tipoUsuario;
+                    }
+                }
+
+                var newStatus = new Status();
+                newStatus.Nombre = "No definido";
+                usuario.Status = newStatus;
+
+                foreach (Status status in catalogoStatuses)
+                {
+                    if (usuario.IdStatus == status.ID)
+                    {
+                        usuario.Status = status;
+                    }
+                }
+
+                var newUbicacion = new Ubicacion();
+                newUbicacion.Nombre = "No definido";
+                usuario.Ubicacion = newUbicacion;
+
+                foreach (Ubicacion ubicacion in catalogoUbicaciones)
+                {
+                    if (usuario.IdUbicacion == ubicacion.ID)
+                    {
+                        usuario.Ubicacion = ubicacion;
+                    }
+                }
+            }
+
             
+            ViewData["catalogoUsuarios"] = catalogoUsuarios;
+            ViewBag.usuarios = new SelectList(catalogoUsuarios, "id", "nombre");
+
             return View();
         }
 
         // GET: Usuario/Create
         public ActionResult Add()
         {
-            var tipoUsuarios = new List<TipoUsuario>();
-            var statuses = new List<Status>();
-            var ubicaciones = new List<Ubicacion>();
 
-            var tipoUsuario0 = new TipoUsuario();
-            tipoUsuario0.ID = 0;
-            tipoUsuario0.Nombre = "Seleccione Tipo de Usuario...";
+            var catalogoTipoUsuarios = new List<TipoUsuario>();
+            var catalogoStatuses = new List<Status>();
+            var catalogoUbicaciones = new List<Ubicacion>();
+            
+            
 
-            var tipoUsuario1 = new TipoUsuario();
-            tipoUsuario1.ID = 1;
-            tipoUsuario1.Nombre = "Alumno";
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
 
-            var tipoUsuario2 = new TipoUsuario();
-            tipoUsuario2.ID = 2;
-            tipoUsuario2.Nombre = "Maestro";
+                //http://url-api:puerto/municipio
+                var responseTask = client.GetAsync("TipoUsuario");
+                responseTask.Wait();
 
-            var tipoUsuario3 = new TipoUsuario();
-            tipoUsuario3.ID = 3;
-            tipoUsuario3.Nombre = "Administrativo";
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var content = result.Content.ReadAsStringAsync();
 
-            tipoUsuarios.Add(tipoUsuario0);
-            tipoUsuarios.Add(tipoUsuario1);
-            tipoUsuarios.Add(tipoUsuario2);
-            tipoUsuarios.Add(tipoUsuario3);
+                    var jsonSettings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
 
-            var status0 = new Status();
-            status0.ID = 0;
-            status0.Nombre = "Seleccione status...";
+                    catalogoTipoUsuarios = JsonConvert.DeserializeObject<List<TipoUsuario>>(content.Result, jsonSettings);
+                }
 
-            var status1 = new Status();
-            status1.ID = 1;
-            status1.Nombre = "Activo";
+            }
 
-            var status2 = new Status();
-            status2.ID = 2;
-            status2.Nombre = "Inactivo";
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
 
-            var status3 = new Status();
-            status3.ID = 3;
-            status3.Nombre = "Pendiente";
+                //http://url-api:puerto/municipio
+                var responseTask = client.GetAsync("Status");
+                responseTask.Wait();
 
-            statuses.Add(status0);
-            statuses.Add(status1);
-            statuses.Add(status2);
-            statuses.Add(status3);
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var content = result.Content.ReadAsStringAsync();
 
-            var ubicacion0 = new Ubicacion();
-            ubicacion0.ID = 0;
-            ubicacion0.Nombre = "Seleccione Ubicacion...";
+                    var jsonSettings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
 
-            var ubicacion1 = new Ubicacion();
-            ubicacion1.ID = 1;
-            ubicacion1.Nombre = "Cancun";
+                    catalogoStatuses = JsonConvert.DeserializeObject<List<Status>>(content.Result, jsonSettings);
+                }
 
-            var ubicacion2 = new Ubicacion();
-            ubicacion2.ID = 2;
-            ubicacion2.Nombre = "CDMX";
+            }
 
-            var ubicacion3 = new Ubicacion();
-            ubicacion3.ID = 3;
-            ubicacion3.Nombre = "Monterrey";
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
 
-            ubicaciones.Add(ubicacion0);
-            ubicaciones.Add(ubicacion1);
-            ubicaciones.Add(ubicacion2);
-            ubicaciones.Add(ubicacion3);
+                //http://url-api:puerto/municipio
+                var responseTask = client.GetAsync("Ubicacion");
+                responseTask.Wait();
 
-            ViewData["catalogoTipoUsuarios"] = tipoUsuarios;
-            ViewBag.tipoUsuarios = new SelectList(tipoUsuarios, "id", "nombre");
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var content = result.Content.ReadAsStringAsync();
 
-            ViewData["catalogoStatuses"] = statuses;
-            ViewBag.statuses = new SelectList(statuses, "id", "nombre");
+                    var jsonSettings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
 
-            ViewData["catalogoUbicaciones"] = ubicaciones;
-            ViewBag.ubicaciones = new SelectList(ubicaciones, "id", "nombre");
+                    catalogoUbicaciones = JsonConvert.DeserializeObject<List<Ubicacion>>(content.Result, jsonSettings);
+                }
 
+            }
+
+            var seleccionaStatus = new Status();
+            seleccionaStatus.ID = 0;
+            seleccionaStatus.Nombre = "Seleccione una opcion";
+            catalogoStatuses.Add(seleccionaStatus);
+
+            var seleccionaTipoUsuario = new TipoUsuario();
+            seleccionaTipoUsuario.ID = 0;
+            seleccionaTipoUsuario.Nombre = "Seleccione una opcion";
+            catalogoTipoUsuarios.Add(seleccionaTipoUsuario);
+
+            var seleccionaUbicacion = new Ubicacion();
+            seleccionaUbicacion.ID = 0;
+            seleccionaUbicacion.Nombre = "Seleccione una opcion";
+            catalogoUbicaciones.Add(seleccionaUbicacion);
+
+            ViewData["catalogoTipoUsuarios"] = catalogoTipoUsuarios;
+            ViewBag.tipoUsuarios = new SelectList(catalogoTipoUsuarios, "id", "nombre");
+
+            ViewData["catalogoStatuses"] = catalogoStatuses;
+            ViewBag.statuses = new SelectList(catalogoStatuses, "id", "nombre");
+
+            ViewData["catalogoUbicaciones"] = catalogoUbicaciones;
+            ViewBag.ubicaciones = new SelectList(catalogoUbicaciones, "id", "nombre");
 
 
             return View();
@@ -107,6 +291,35 @@ namespace ControlEscolar.Controllers
             try
             {
                 // TODO: Add insert logic here
+                // TODO: Add insert logic here
+                var jsonSettings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    MissingMemberHandling = MissingMemberHandling.Ignore
+                };
+
+                var payload = JsonConvert.SerializeObject(usuario, jsonSettings);
+
+                var payloadContent = new StringContent(payload, Encoding.UTF8, "application/json");
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(apiUrl);
+                    client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+                    //http://url-api:puerto/municipio
+                    var responseTask = client.PostAsync("Usuario/", payloadContent);
+                    responseTask.Wait();
+
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var content = result.Content.ReadAsStringAsync();
+                        usuario = JsonConvert.DeserializeObject<Usuario>(content.Result, jsonSettings);
+
+                    }
+
+                }
 
                 return RedirectToAction("Index");
             }
@@ -119,135 +332,134 @@ namespace ControlEscolar.Controllers
         // GET: Usuario/Edit/5
         public ActionResult Edit(int ID)
         {
-            var tipoUsuarios = new List<TipoUsuario>();
-            var statuses = new List<Status>();
-            var ubicaciones = new List<Ubicacion>();
-
-            var tipoUsuario0 = new TipoUsuario();
-            tipoUsuario0.ID = 0;
-            tipoUsuario0.Nombre = "Seleccione Tipo de Usuario...";
-
-            var tipoUsuario1 = new TipoUsuario();
-            tipoUsuario1.ID = 1;
-            tipoUsuario1.Nombre = "Alumno";
-
-            var tipoUsuario2 = new TipoUsuario();
-            tipoUsuario2.ID = 2;
-            tipoUsuario2.Nombre = "Maestro";
-
-            var tipoUsuario3 = new TipoUsuario();
-            tipoUsuario3.ID = 3;
-            tipoUsuario3.Nombre = "Administrativo";
-
-            tipoUsuarios.Add(tipoUsuario0);
-            tipoUsuarios.Add(tipoUsuario1);
-            tipoUsuarios.Add(tipoUsuario2);
-            tipoUsuarios.Add(tipoUsuario3);
-
-            var status0 = new Status();
-            status0.ID = 0;
-            status0.Nombre = "Seleccione status...";
-
-            var status1 = new Status();
-            status1.ID = 1;
-            status1.Nombre = "Activo";
-
-            var status2 = new Status();
-            status2.ID = 2;
-            status2.Nombre = "Inactivo";
-
-            var status3 = new Status();
-            status3.ID = 3;
-            status3.Nombre = "Pendiente";
-
-            statuses.Add(status0);
-            statuses.Add(status1);
-            statuses.Add(status2);
-            statuses.Add(status3);
-
-            var ubicacion0 = new Ubicacion();
-            ubicacion0.ID = 0;
-            ubicacion0.Nombre = "Seleccione Ubicacion...";
-
-            var ubicacion1 = new Ubicacion();
-            ubicacion1.ID = 1;
-            ubicacion1.Nombre = "Cancun";
-
-            var ubicacion2 = new Ubicacion();
-            ubicacion2.ID = 2;
-            ubicacion2.Nombre = "CDMX";
-
-            var ubicacion3 = new Ubicacion();
-            ubicacion3.ID = 3;
-            ubicacion3.Nombre = "Monterrey";
-
-            ubicaciones.Add(ubicacion0);
-            ubicaciones.Add(ubicacion1);
-            ubicaciones.Add(ubicacion2);
-            ubicaciones.Add(ubicacion3);
-
-            ViewData["catalogoTipoUsuarios"] = tipoUsuarios;
-            ViewBag.tipoUsuarios = new SelectList(tipoUsuarios, "id", "nombre");
-
-            ViewData["catalogoStatuses"] = statuses;
-            ViewBag.statuses = new SelectList(statuses, "id", "nombre");
-
-            ViewData["catalogoUbicaciones"] = ubicaciones;
-            ViewBag.ubicaciones = new SelectList(ubicaciones, "id", "nombre");
-
-            ViewData["userId"] = ID;
-
             var usuario = new Usuario();
-            if (ID == 1)
+            var catalogoTipoUsuarios = new List<TipoUsuario>();
+            var catalogoStatuses = new List<Status>();
+            var catalogoUbicaciones = new List<Ubicacion>();
+
+            var seleccionaStatus = new Status();
+            seleccionaStatus.ID = 0;
+            seleccionaStatus.Nombre = "Seleccione una opcion";
+            catalogoStatuses.Add(seleccionaStatus);
+
+            var seleccionaTipoUsuario = new TipoUsuario();
+            seleccionaTipoUsuario.ID = 0;
+            seleccionaTipoUsuario.Nombre = "Seleccione una opcion";
+            catalogoTipoUsuarios.Add(seleccionaTipoUsuario);
+
+            var seleccionaUbicacion = new Ubicacion();
+            seleccionaUbicacion.ID = 0;
+            seleccionaUbicacion.Nombre = "Seleccione una opcion";
+            catalogoUbicaciones.Add(seleccionaUbicacion);
+
+            using (var client = new HttpClient())
             {
-                usuario.ID = ID;
-                usuario.NumeroIdentificacion = "11111";
-                usuario.PrimerNombre = "Miguel";
-                usuario.SegundoNombre = "Angel";
-                usuario.PrimerApellido = "Torres";
-                usuario.SegundoApellido = "Govea";
-                usuario.Correo = "miguel@maf.mx";
-                usuario.NumeroFijo = 55555555;
-                usuario.NumeroMovil = 555555555;
-                usuario.IdUbicacion = 1;
-                usuario.Contrasena = "P4ssword";
-                usuario.IdStatus = 2;
-                usuario.IdTipoUsuario = 3;
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+                //http://url-api:puerto/municipio
+                var responseTask = client.GetAsync("TipoUsuario");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var content = result.Content.ReadAsStringAsync();
+
+                    var jsonSettings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+
+                    catalogoTipoUsuarios = JsonConvert.DeserializeObject<List<TipoUsuario>>(content.Result, jsonSettings);
+                }
+
             }
 
-            if (ID == 2)
+            using (var client = new HttpClient())
             {
-                usuario.ID = ID;
-                usuario.NumeroIdentificacion = "11111";
-                usuario.PrimerNombre = "Dey";
-                usuario.SegundoNombre = "Angel";
-                usuario.PrimerApellido = "Tello";
-                usuario.SegundoApellido = "Govea";
-                usuario.Correo = "dey@maf.mx";
-                usuario.NumeroFijo = 55555555;
-                usuario.NumeroMovil = 555555555;
-                usuario.IdUbicacion = 1;
-                usuario.Contrasena = "P4ssword";
-                usuario.IdStatus = 2;
-                usuario.IdTipoUsuario = 3;
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+                //http://url-api:puerto/municipio
+                var responseTask = client.GetAsync("Status");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var content = result.Content.ReadAsStringAsync();
+
+                    var jsonSettings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+
+                    catalogoStatuses = JsonConvert.DeserializeObject<List<Status>>(content.Result, jsonSettings);
+                }
+
             }
 
-            if (ID == 3)
+            using (var client = new HttpClient())
             {
-                usuario.ID = ID;
-                usuario.NumeroIdentificacion = "11111";
-                usuario.PrimerNombre = "Erato";
-                usuario.SegundoNombre = "Angel";
-                usuario.PrimerApellido = "Rodriguez";
-                usuario.SegundoApellido = "Govea";
-                usuario.Correo = "erasto@maf.mx";
-                usuario.NumeroFijo = 55555555;
-                usuario.NumeroMovil = 555555555;
-                usuario.IdUbicacion = 1;
-                usuario.Contrasena = "P4ssword";
-                usuario.IdStatus = 2;
-                usuario.IdTipoUsuario = 3;
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+                //http://url-api:puerto/municipio
+                var responseTask = client.GetAsync("Ubicacion");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var content = result.Content.ReadAsStringAsync();
+
+                    var jsonSettings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+
+                    catalogoUbicaciones = JsonConvert.DeserializeObject<List<Ubicacion>>(content.Result, jsonSettings);
+                }
+
             }
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+                //http://url-api:puerto/municipio
+                var responseTask = client.GetAsync("Usuario/" + ID);
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var content = result.Content.ReadAsStringAsync();
+
+                    var jsonSettings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+
+                    usuario = JsonConvert.DeserializeObject<Usuario>(content.Result, jsonSettings);
+                }
+            }
+
+            ViewData["catalogoTipoUsuarios"] = catalogoTipoUsuarios;
+            ViewBag.tipoUsuarios = new SelectList(catalogoTipoUsuarios, "id", "nombre");
+
+            ViewData["catalogoStatuses"] = catalogoStatuses;
+            ViewBag.statuses = new SelectList(catalogoStatuses, "id", "nombre");
+
+            ViewData["catalogoUbicaciones"] = catalogoUbicaciones;
+            ViewBag.ubicaciones = new SelectList(catalogoUbicaciones, "id", "nombre");
+
 
             ViewData["usuario"] = usuario;
 
@@ -260,7 +472,38 @@ namespace ControlEscolar.Controllers
         {
             try
             {
-                // TODO: Add update logic here
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(apiUrl);
+                    client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+                    var jsonSettings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+
+                    var payload = JsonConvert.SerializeObject(usuario, jsonSettings);
+
+                    var payloadContent = new StringContent(payload, Encoding.UTF8, "application/json");
+
+
+                    //http://url-api:puerto/municipio
+                    var responseTask = client.PutAsync("Usuario/" + usuario.ID, payloadContent);
+                    responseTask.Wait();
+
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var content = result.Content.ReadAsStringAsync();
+
+
+
+                        usuario = JsonConvert.DeserializeObject<Usuario>(content.Result, jsonSettings);
+
+                    }
+
+                }
 
                 return RedirectToAction("Index");
             }
@@ -273,135 +516,119 @@ namespace ControlEscolar.Controllers
         // GET: Usuario/Delete/5
         public ActionResult Delete(int ID)
         {
-            var tipoUsuarios = new List<TipoUsuario>();
-            var statuses = new List<Status>();
-            var ubicaciones = new List<Ubicacion>();
-
-            var tipoUsuario0 = new TipoUsuario();
-            tipoUsuario0.ID = 0;
-            tipoUsuario0.Nombre = "Seleccione Tipo de Usuario...";
-
-            var tipoUsuario1 = new TipoUsuario();
-            tipoUsuario1.ID = 1;
-            tipoUsuario1.Nombre = "Alumno";
-
-            var tipoUsuario2 = new TipoUsuario();
-            tipoUsuario2.ID = 2;
-            tipoUsuario2.Nombre = "Maestro";
-
-            var tipoUsuario3 = new TipoUsuario();
-            tipoUsuario3.ID = 3;
-            tipoUsuario3.Nombre = "Administrativo";
-
-            tipoUsuarios.Add(tipoUsuario0);
-            tipoUsuarios.Add(tipoUsuario1);
-            tipoUsuarios.Add(tipoUsuario2);
-            tipoUsuarios.Add(tipoUsuario3);
-
-            var status0 = new Status();
-            status0.ID = 0;
-            status0.Nombre = "Seleccione status...";
-
-            var status1 = new Status();
-            status1.ID = 1;
-            status1.Nombre = "Activo";
-
-            var status2 = new Status();
-            status2.ID = 2;
-            status2.Nombre = "Inactivo";
-
-            var status3 = new Status();
-            status3.ID = 3;
-            status3.Nombre = "Pendiente";
-
-            statuses.Add(status0);
-            statuses.Add(status1);
-            statuses.Add(status2);
-            statuses.Add(status3);
-
-            var ubicacion0 = new Ubicacion();
-            ubicacion0.ID = 0;
-            ubicacion0.Nombre = "Seleccione Ubicacion...";
-
-            var ubicacion1 = new Ubicacion();
-            ubicacion1.ID = 1;
-            ubicacion1.Nombre = "Cancun";
-
-            var ubicacion2 = new Ubicacion();
-            ubicacion2.ID = 2;
-            ubicacion2.Nombre = "CDMX";
-
-            var ubicacion3 = new Ubicacion();
-            ubicacion3.ID = 3;
-            ubicacion3.Nombre = "Monterrey";
-
-            ubicaciones.Add(ubicacion0);
-            ubicaciones.Add(ubicacion1);
-            ubicaciones.Add(ubicacion2);
-            ubicaciones.Add(ubicacion3);
-
-            ViewData["catalogoTipoUsuarios"] = tipoUsuarios;
-            ViewBag.tipoUsuarios = new SelectList(tipoUsuarios, "id", "nombre");
-
-            ViewData["catalogoStatuses"] = statuses;
-            ViewBag.statuses = new SelectList(statuses, "id", "nombre");
-
-            ViewData["catalogoUbicaciones"] = ubicaciones;
-            ViewBag.ubicaciones = new SelectList(ubicaciones, "id", "nombre");
-
-            ViewData["userId"] = ID;
-
             var usuario = new Usuario();
-            if (ID == 1)
+            var catalogoTipoUsuarios = new List<TipoUsuario>();
+            var catalogoStatuses = new List<Status>();
+            var catalogoUbicaciones = new List<Ubicacion>();
+
+            using (var client = new HttpClient())
             {
-                usuario.ID = ID;
-                usuario.NumeroIdentificacion = "11111";
-                usuario.PrimerNombre = "Miguel";
-                usuario.SegundoNombre = "Angel";
-                usuario.PrimerApellido = "Torres";
-                usuario.SegundoApellido = "Govea";
-                usuario.Correo = "miguel@maf.mx";
-                usuario.NumeroFijo = 55555555;
-                usuario.NumeroMovil = 555555555;
-                usuario.IdUbicacion = 1;
-                usuario.Contrasena = "P4ssword";
-                usuario.IdStatus = 2;
-                usuario.IdTipoUsuario = 3;
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+                //http://url-api:puerto/municipio
+                var responseTask = client.GetAsync("TipoUsuario");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var content = result.Content.ReadAsStringAsync();
+
+                    var jsonSettings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+
+                    catalogoTipoUsuarios = JsonConvert.DeserializeObject<List<TipoUsuario>>(content.Result, jsonSettings);
+                }
+
             }
 
-            if (ID == 2)
+            using (var client = new HttpClient())
             {
-                usuario.ID = ID;
-                usuario.NumeroIdentificacion = "11111";
-                usuario.PrimerNombre = "Dey";
-                usuario.SegundoNombre = "Angel";
-                usuario.PrimerApellido = "Tello";
-                usuario.SegundoApellido = "Govea";
-                usuario.Correo = "dey@maf.mx";
-                usuario.NumeroFijo = 55555555;
-                usuario.NumeroMovil = 555555555;
-                usuario.IdUbicacion = 1;
-                usuario.Contrasena = "P4ssword";
-                usuario.IdStatus = 2;
-                usuario.IdTipoUsuario = 3;
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+                //http://url-api:puerto/municipio
+                var responseTask = client.GetAsync("Status");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var content = result.Content.ReadAsStringAsync();
+
+                    var jsonSettings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+
+                    catalogoStatuses = JsonConvert.DeserializeObject<List<Status>>(content.Result, jsonSettings);
+                }
+
             }
 
-            if (ID == 3)
+            using (var client = new HttpClient())
             {
-                usuario.ID = ID;
-                usuario.NumeroIdentificacion = "11111";
-                usuario.PrimerNombre = "Erato";
-                usuario.SegundoNombre = "Angel";
-                usuario.PrimerApellido = "Rodriguez";
-                usuario.SegundoApellido = "Govea";
-                usuario.Correo = "erasto@maf.mx";
-                usuario.NumeroFijo = 55555555;
-                usuario.NumeroMovil = 555555555;
-                usuario.IdUbicacion = 1;
-                usuario.Contrasena = "P4ssword";
-                usuario.IdStatus = 2;
-                usuario.IdTipoUsuario = 3;
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+                //http://url-api:puerto/municipio
+                var responseTask = client.GetAsync("Ubicacion");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var content = result.Content.ReadAsStringAsync();
+
+                    var jsonSettings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+
+                    catalogoUbicaciones = JsonConvert.DeserializeObject<List<Ubicacion>>(content.Result, jsonSettings);
+                }
+
             }
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+                //http://url-api:puerto/municipio
+                var responseTask = client.GetAsync("Usuario/" + ID);
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var content = result.Content.ReadAsStringAsync();
+
+                    var jsonSettings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+
+                    usuario = JsonConvert.DeserializeObject<Usuario>(content.Result, jsonSettings);
+                }
+            }
+
+            ViewData["catalogoTipoUsuarios"] = catalogoTipoUsuarios;
+            ViewBag.tipoUsuarios = new SelectList(catalogoTipoUsuarios, "id", "nombre");
+
+            ViewData["catalogoStatuses"] = catalogoStatuses;
+            ViewBag.statuses = new SelectList(catalogoStatuses, "id", "nombre");
+
+            ViewData["catalogoUbicaciones"] = catalogoUbicaciones;
+            ViewBag.ubicaciones = new SelectList(catalogoUbicaciones, "id", "nombre");
+
 
             ViewData["usuario"] = usuario;
 
@@ -415,7 +642,21 @@ namespace ControlEscolar.Controllers
             try
             {
                 // TODO: Add delete logic here
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(apiUrl);
+                    client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
 
+                    //http://url-api:puerto/municipio
+                    var responseTask = client.DeleteAsync("Usuario/" + usuario.ID);
+                    responseTask.Wait();
+
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+
+                    }
+                }
                 return RedirectToAction("Index");
             }
             catch

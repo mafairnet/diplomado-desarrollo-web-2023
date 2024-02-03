@@ -1,0 +1,69 @@
+﻿@model ControlEscolar.Models.Calle
+
+@{
+    var calle = ViewData["calle"] as ControlEscolar.Models.Calle;
+    //var allLocalidad = ViewData["catalogoLocalidades"] as ControlEscolar.Models.Localidad;
+}
+
+<script type="text/javascript">
+    function setLocalidad() {
+        var idLocalidad = $('select[name="Localidad.ID"]').val();
+        console.log("Localidad Seleccionado:" + idLocalidad);
+        $("#calle_IdLocalidad").val(idLocalidad);
+    }
+
+    $(document).ready(function () {
+        var idLocalidad = $("#calle_IdLocalidad").val();
+        console.log("Modificando Localidad: " + idLocalidad);
+        $('select[name="Localidad.ID"]').val(idLocalidad);
+    });
+
+</script>
+<h1>Agregar Calle</h1>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<div class="form-horizontal">
+    <h4>Borrar Calle: @calle.ID</h4>
+
+    <hr />
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => calle.ID)
+
+    <div class="form-group">
+        @Html.LabelFor(model => calle.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => calle.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => calle.Nombre, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <!--<div class="form-group">
+        @Html.LabelFor(model => calle.IdLocalidad, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => calle.IdLocalidad, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => calle.IdLocalidad, "", new { @class = "text-danger" })
+        </div>
+    </div>-->
+
+    @Html.HiddenFor(model => calle.IdLocalidad)
+
+    <div class="form-group">
+        @Html.LabelFor(model => calle.Localidad, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Localidad.ID, ViewBag.paises as SelectList, new { @class = "form-control", @onChange = "setLocalidad()" })
+            @Html.ValidationMessageFor(model => calle.IdLocalidad, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Borrar" class="btn-default"
+        </div>
+    </div>
+
+</div>
+
+}

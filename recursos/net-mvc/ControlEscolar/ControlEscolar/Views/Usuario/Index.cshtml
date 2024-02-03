@@ -9,7 +9,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            var datatable = new DataTable('#tablaAlumnos');
+            var datatable = new DataTable('#tablaUsuarios');
         });
 
         function agregarUsuario() {
@@ -41,47 +41,42 @@
         <br />
         <br />
 
-        <table id="tablaAlumnos" class="display" style="width:100%">
+        <table id="tablaUsuarios" class="display" style="width:100%">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>FirstName</th>
-                    <th>SecondName</th>
-                    <th>Username</th>
+                    <th>Numero de Identificacion</th>
+                    <th>Primer Nombre</th>
+                    <th>Segundo Nombre</th>
+                    <th>Primer Apellido</th>
+                    <th>Segundo Apellido</th>
+                    <th>Correo</th>
+                    <th>Ubicacion</th>
+                    <th>Status</th>
+                    <th>Tipo Usuario</th>
                     <th>Controles</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Miguel</td>
-                    <td>Torres</td>
-                    <td>mafairnet</td>
-                    <td>
-                        <input type="button" value="Editar" onclick="editarUsuario('1')" />
-                        <input type="button" value="Borrar" onclick="borrarUsuario('1')" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Dey</td>
-                    <td>Tello</td>
-                    <td>dey.tello</td>
-                    <td>
-                        <input type="button" value="Editar" onclick="editarUsuario('2')" />
-                        <input type="button" value="Borrar" onclick="borrarUsuario('2')" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Erasto</td>
-                    <td>Rodriguez</td>
-                    <td>erasto.rodriguez</td>
-                    <td>
-                        <input type="button" value="Editar" onclick="editarUsuario('3')" />
-                        <input type="button" value="Borrar" onclick="borrarUsuario('3')" />
-                    </td>
-                </tr>
+                @foreach (var usuario in ViewData["catalogoUsuarios"] as List<ControlEscolar.Models.Usuario>)
+                {
+                    <tr>
+                        <td>@usuario.ID</td>
+                        <td>@usuario.NumeroIdentificacion</td>
+                        <td>@usuario.PrimerNombre</td>
+                        <td>@usuario.SegundoNombre</td>
+                        <td>@usuario.PrimerApellido</td>
+                        <td>@usuario.SegundoApellido</td>
+                        <td>@usuario.Correo</td>
+                        <td>@usuario.Ubicacion.Nombre</td>
+                        <td>@usuario.Status.Nombre</td>
+                        <td>@usuario.TipoUsuario.Nombre</td>
+                        <td>
+                            <input type="button" value="Editar" onclick="editarEstado('@usuario.ID')" />
+                            <input type="button" value="Borrar" onclick="borrarEstado('@usuario.ID')" />
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     

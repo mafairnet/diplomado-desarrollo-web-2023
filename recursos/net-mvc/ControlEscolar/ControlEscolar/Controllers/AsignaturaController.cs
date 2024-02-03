@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace ControlEscolar.Controllers
 {
+    [Authorize]
     public class AsignaturaController : Controller
     {
         // GET: Asignatura

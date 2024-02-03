@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Administracion de Tipo Usuarios</title>
+    
+</head>
+<body>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var datatable = new DataTable('#tablaTipoUsuarios');
+        });
+
+        function agregarTipoUsuario() {
+            document.location = "/TipoUsuario/Add/";
+        }
+
+        function editarTipoUsuario(idTipoUsuario) {
+            document.location = "/TipoUsuario/Edit/" + idTipoUsuario;
+        }
+
+        function borrarTipoUsuario(idTipoUsuario) {
+            document.location = "/TipoUsuario/Delete/" + idTipoUsuario;
+        }
+
+    </script>
+
+    <br/>
+
+    <h1>Administracion de Tipo Usuarios</h1>
+    <br />
+    <div class="row">
+        <div class="col-md-9 bg-light text-right">
+
+        </div>
+        <div class="col-md-3 bg-light text-right">
+            <input type="button" value="Agregar Tipo Usuario" onclick="agregarTipoUsuario()" />
+        </div>
+    </div>
+        <br />
+        <br />
+
+        <table id="tablaTipoUsuarios" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Controles</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tipoUsuario in ViewData["catalogoTipoUsuarios"] as List<ControlEscolar.Models.TipoUsuario>)
+                {
+                    <tr>
+                        <td>@tipoUsuario.ID</td>
+                        <td>@tipoUsuario.Nombre</td>
+                        <td>
+                            <input type="button" value="Editar" onclick="editarTipoUsuario('@tipoUsuario.ID')"/>
+                            <input type="button" value="Borrar" onclick="borrarTipoUsuario('@tipoUsuario.ID')"/>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    
+
+
+</body>
+</html>

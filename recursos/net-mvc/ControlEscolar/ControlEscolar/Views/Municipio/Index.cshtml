@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Administracion de municipios</title>
+    
+</head>
+<body>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var datatable = new DataTable('#tablaMunicipios');
+        });
+
+        function agregarMunicipio() {
+            document.location = "/Municipio/Add/";
+        }
+
+        function editarMunicipio(idMunicipio) {
+            document.location = "/Municipio/Edit/" + idMunicipio;
+        }
+
+        function borrarMunicipio(idMunicipio) {
+            document.location = "/Municipio/Delete/" + idMunicipio;
+        }
+
+    </script>
+
+    <br/>
+
+    <h1>Administracion de municipios</h1>
+    <br />
+    <div class="row">
+        <div class="col-md-9 bg-light text-right">
+
+        </div>
+        <div class="col-md-3 bg-light text-right">
+            <input type="button" value="Agregar Municipio" onclick="agregarMunicipio()" />
+        </div>
+    </div>
+        <br />
+        <br />
+
+        <table id="tablaMunicipios" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Id Pais</th>
+                    <th>Controles</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var municipio in ViewData["catalogoMunicipios"] as List<ControlEscolar.Models.Municipio>)
+                {
+                    <tr>
+                        <td>@municipio.ID</td>
+                        <td>@municipio.Nombre</td>
+                        <td>@municipio.Estado.Nombre</td>
+                        <td>
+                            <input type="button" value="Editar" onclick="editarMunicipio('@municipio.ID')"/>
+                            <input type="button" value="Borrar" onclick="borrarMunicipio('@municipio.ID')"/>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    
+
+
+</body>
+</html>

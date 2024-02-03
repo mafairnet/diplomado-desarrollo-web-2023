@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Administracion de calificaciones</title>
+    
+</head>
+<body>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var datatable = new DataTable('#tablaCalificaciones');
+        });
+
+        function agregarCalificacion() {
+            document.location = "/Calificacion/Add/";
+        }
+
+        function editarCalificacion(idCalificacion) {
+            document.location = "/Calificacion/Edit/" + idCalificacion;
+        }
+
+        function borrarCalificacion(idCalificacion) {
+            document.location = "/Calificacion/Delete/" + idCalificacion;
+        }
+
+    </script>
+
+    <br/>
+
+    <h1>Administracion de calificaciones</h1>
+    <br />
+    <div class="row">
+        <div class="col-md-9 bg-light text-right">
+
+        </div>
+        <div class="col-md-3 bg-light text-right">
+            <input type="button" value="Agregar Calificacion" onclick="agregarCalificacion()" />
+        </div>
+    </div>
+        <br />
+        <br />
+
+        <table id="tablaCalificaciones" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Controles</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var calificacion in ViewData["catalogoCalificaciones"] as List<ControlEscolar.Models.Calificacion>)
+                {
+                    <tr>
+                        <td>@calificacion.ID</td>
+                        <td>@calificacion.Nombre</td>
+                        <td>
+                            <input type="button" value="Editar" onclick="editarCalificacion('@calificacion.ID')"/>
+                            <input type="button" value="Borrar" onclick="borrarCalificacion('@calificacion.ID')"/>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    
+
+
+</body>
+</html>

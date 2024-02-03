@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Administracion de acciones</title>
+    
+</head>
+<body>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var datatable = new DataTable('#tablaAcciones');
+        });
+
+        function agregarAccion() {
+            document.location = "/Accion/Add/";
+        }
+
+        function editarAccion(idAccion) {
+            document.location = "/Accion/Edit/" + idAccion;
+        }
+
+        function borrarAccion(idAccion) {
+            document.location = "/Accion/Delete/" + idAccion;
+        }
+
+    </script>
+
+    <br/>
+
+    <h1>Administracion de acciones</h1>
+    <br />
+    <div class="row">
+        <div class="col-md-9 bg-light text-right">
+
+        </div>
+        <div class="col-md-3 bg-light text-right">
+            <input type="button" value="Agregar Accion" onclick="agregarAccion()" />
+        </div>
+    </div>
+        <br />
+        <br />
+
+        <table id="tablaAcciones" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Controles</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var accion in ViewData["catalogoAccions"] as List<ControlEscolar.Models.Accion>)
+                {
+                    <tr>
+                        <td>@accion.ID</td>
+                        <td>@accion.Nombre</td>
+                        <td>
+                            <input type="button" value="Editar" onclick="editarAccion('@accion.ID')"/>
+                            <input type="button" value="Borrar" onclick="borrarAccion('@accion.ID')"/>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    
+
+
+</body>
+</html>

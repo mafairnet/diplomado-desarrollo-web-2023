@@ -1,0 +1,96 @@
+﻿@model ControlEscolar.Models.Ubicacion
+
+@{
+    var ubicacion = ViewData["ubicacion"] as ControlEscolar.Models.Ubicacion;
+    //var allCalle = ViewData["catalogoCallees"] as ControlEscolar.Models.Calle;
+}
+
+<script type="text/javascript">
+    function setCalle() {
+        var idCalle = $('select[name="Calle.ID"]').val();
+        console.log("Calle Seleccionado:" + idCalle);
+        $("#ubicacion_IdCalle").val(idCalle);
+    }
+
+    
+
+    $(document).ready(function () {
+        var idCalle = $("#ubicacion_IdCalle").val();
+        console.log("Modificando Calle: " + idCalle);
+        $('select[name="Calle.ID"]').val(idCalle);
+
+    });
+
+</script>
+<h1>Agregar Ubicacion</h1>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<div class="form-horizontal">
+    <h4>Editar Ubicacion: @ubicacion.ID</h4>
+
+    <hr />
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => ubicacion.ID)
+
+    <div class="form-group">
+        @Html.LabelFor(model => ubicacion.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => ubicacion.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => ubicacion.Nombre, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => ubicacion.NumeroExterior, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => ubicacion.NumeroExterior, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => ubicacion.NumeroExterior, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => ubicacion.NumeroInterior, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => ubicacion.NumeroInterior, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => ubicacion.NumeroInterior, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => ubicacion.CodigoPostal, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => ubicacion.CodigoPostal, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => ubicacion.CodigoPostal, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <!--<div class="form-group">
+        @Html.LabelFor(model => ubicacion.IdCalle, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => ubicacion.IdCalle, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => ubicacion.IdCalle, "", new { @class = "text-danger" })
+        </div>
+    </div>-->
+
+    @Html.HiddenFor(model => ubicacion.IdCalle)
+
+    <div class="form-group">
+        @Html.LabelFor(model => ubicacion.Calle, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Calle.ID, ViewBag.calles as SelectList, new { @class = "form-control", @onChange = "setCalle()" })
+            @Html.ValidationMessageFor(model => ubicacion.IdCalle, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Editar" class="btn-default"
+        </div>
+    </div>
+
+</div>
+
+}

@@ -18,10 +18,12 @@ namespace ControlEscolar.Models
         [JsonProperty("numeroInterior")]
         public string NumeroInterior { get; set; }
         [JsonProperty("codigoPostal")]
-        public string codigoPostal { get; set; }
+        public string CodigoPostal { get; set; }
         [JsonProperty("idLocalidad")]
-        public int IdLocalidad { get; set; }
+        public int IdCalle { get; set; }
+        public Calle Calle { get; set; }
         #endregion
+
 
         #region Metodos
 
